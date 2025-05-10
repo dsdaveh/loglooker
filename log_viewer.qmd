@@ -3,10 +3,9 @@ title: "Log File Viewer"
 format: html
 params:
   files: 
-    - diag-server
-    - diag-system
+    - file
 execute:
-  echo: true
+  echo: false
   warning: false
 ---
 
