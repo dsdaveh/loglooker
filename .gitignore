@@ -1,3 +1,9 @@
+# script output files
+loglooker_run.qmd
+
+# Log files
+logs/*.log
+
 # R specific files
 .Rproj.user
 .Rhistory
@@ -12,8 +18,6 @@
 *.qmd.odt
 *.qmd.rtf
 
-# Log files
-logs/*.log
 
 # OS specific files
 .DS_Store
