@@ -1,0 +1,4 @@
+# copy this file to .env and fill in the values
+# Replace <URL> and <API_KEY> with your Posit Connect server URL and API key
+POSIT_CONNECT_SERVER=<URL> 
+POSIT_CONNECT_APIKEY=<API_KEY>
