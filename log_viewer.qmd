@@ -48,6 +48,9 @@ output_log <- function(file_name) {
     log_data,
     searchable = TRUE,
     defaultPageSize = 10,
+    paginationType = "jump",
+    showPageSizeOptions = TRUE,
+    pageSizeOptions = c(10, 25, 50, 100),
     columns = list(
       Line_Number = colDef(
         name = "Line",
@@ -77,7 +80,6 @@ if (!exists("params")) {
   )
 }
 ```
-
 ```{r}
 #| label: toc
 #| echo: false
