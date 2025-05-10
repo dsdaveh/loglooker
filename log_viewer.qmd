@@ -6,7 +6,6 @@ params:
     - file
 execute:
   echo: false
-  warning: false
 ---
 
 ```{r setup}
@@ -81,7 +80,6 @@ if (!exists("params")) {
 
 ```{r}
 #| label: all_logs
-#| echo: false
 
 # Display all log files
 tagList(
