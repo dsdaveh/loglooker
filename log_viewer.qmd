@@ -1,0 +1,91 @@
+---
+title: "Log File Viewer"
+format: html
+params:
+  files: 
+    - diag-server
+    - diag-system
+execute:
+  echo: true
+  warning: false
+---
+
+```{r setup}
+#| label: setup
+#| include: false
+
+library(reactable)
+library(dplyr)
+library(readr)
+library(purrr)
+library(glue)
+library(tibble)
+
+# Function to read last n lines of a file
+read_log_lines <- function(file_path) {
+  if (!file.exists(file_path)) {
+    return(tibble(Line = "File not found"))
+  }
+  
+  # Read all lines
+  lines <- readLines(file_path)
+  
+  # Create tibble with line numbers
+  tibble(
+    Line_Number = seq_along(lines),
+    Content = lines
+  )
+}
+
+output_log <- function(file_name) {
+  log_file <- glue("logs/{file_name}.log")
+  
+  # Read and display the log file
+  log_data <- read_log_lines(log_file)
+  
+  reactable(
+    log_data,
+    searchable = TRUE,
+    defaultPageSize = 20,
+    columns = list(
+      Line_Number = colDef(
+        name = "Line",
+        width = 50,
+        align = "right"
+      ),
+      Content = colDef(
+        name = "Log Content"
+      )
+    ),
+    theme = reactableTheme(
+      searchInputStyle = list(width = "100%"),
+      style = list(fontSize = "0.8rem"),
+      headerStyle = list(fontSize = "0.8rem")
+    )
+  )
+}
+```
+
+```{r}
+#| label: dev
+#| echo: false
+# set params default for development mode if it is not set
+if (!exists("params")) {
+  params <- list(
+    files = c("diag-server", "diag-system")
+  )
+}
+```
+
+
+## `r params$files[1]`
+
+```{r}
+#| label: log_viewer_1
+#| echo: false
+
+# Display the first log file  
+output_log(params$files[1])
+```
+
+
