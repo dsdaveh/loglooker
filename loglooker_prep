@@ -25,12 +25,21 @@ BEGIN {
     print "---"
 }
 /^---$/ {
-    in_yaml = 1
-    next
+    if (in_yaml == 0) {
+        in_yaml = 1
+        next
+    } else {
+        in_yaml = 0
+        print
+        next
+    }
 }
 in_yaml == 1 && /^params:/ {
     in_params = 1
     print
+    next
+}
+in_params == 1 && /^  files:/ {
     print "  files:"
     n = split(files, file_array, " ")
     for (i = 1; i <= n; i++) {
@@ -38,15 +47,13 @@ in_yaml == 1 && /^params:/ {
             print "    - " file_array[i]
         }
     }
+    # Skip the template line
+    while (getline && /^    - file/) { }
+    if ($0 != "") print
     next
 }
-in_params == 1 && /^[a-z]/ {
+in_params == 1 && /^  [a-z]/ {
     in_params = 0
-    print
-    next
-}
-in_yaml == 1 && /^---$/ {
-    in_yaml = 0
     print
     next
 }
