@@ -78,7 +78,20 @@ if (!exists("params")) {
 }
 ```
 
+```{r}
+#| label: toc
+#| echo: false
 
+# Create table of contents
+tagList(
+  h2("Contents"),
+  tags$ul(
+    map(params$files, function(file) {
+      tags$li(tags$a(href = paste0("#", file), file))
+    })
+  )
+)
+```
 
 ```{r}
 #| label: all_logs
@@ -87,7 +100,7 @@ if (!exists("params")) {
 tagList(
   map(params$files, function(file) {
     tagList(
-      h3(file),
+      h3(file, id = file),
       output_log(file)
     )
   })
