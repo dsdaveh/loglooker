@@ -1,36 +1,62 @@
-# Log Viewer
+# LogLooker
 
-A Quarto-based log file viewer that displays log files in an interactive, searchable table format.
+A Quarto-based log file viewer that displays log files in an interactive table format.
+
+## Setup
+
+1. Clone this repository
+2. Create a `.env` file based on the `.env_template`:
+   ```bash
+   cp .env_template .env
+   ```
+3. Edit `.env` and set your Posit Connect credentials:
+   ```
+   POSIT_CONNECT_SERVER=https://your-connect-server.com/
+   POSIT_CONNECT_APIKEY=your-api-key
+   ```
+
+## Usage
+
+### Preparing Log Files
+
+1. Place your log files in the `logs` directory with `.log` extension
+2. Run the preparation script to update the Quarto document:
+   ```bash
+   ./loglooker_prep
+   ```
+
+### Deployment
+
+You can deploy to Posit Connect using either method:
+
+#### R-based Deployment (Recommended)
+
+Use the R script for deployment:
+```bash
+Rscript deploy_rsc.R
+```
+
+This script will:
+- Load environment variables from your `.env` file
+- Connect to your Posit Connect server
+- Deploy the Quarto document and log files
+
+#### Manual Deployment
+
+1. Open `loglooker_run.qmd` in RStudio
+2. Click "Publish" and select your Posit Connect server
 
 ## Features
 
 - Interactive table view of log files
 - Searchable content
-- Support for multiple log files
-- Compact display with adjustable font sizes
-- Line numbers for easy reference
+- Adjustable number of lines displayed (10, 25, 50, or 100)
+- Table of contents for easy navigation
+- Automatic updates when log files change
 
-## Usage
+## Dependencies
 
-1. Place your log files in the `logs` directory
-2. Update the `files` parameter in `log_viewer.qmd` to include your log file names (or use the prep script below)
-3. **(Recommended)** Run the prep script to automatically generate a Quarto file with the correct log file list:
-   ```bash
-   ./loglooker_prep
-   ```
-   This will create a new file called `loglooker_run.qmd` with the correct YAML for all `.log` files in the `logs` directory.
-4. Render the Quarto document:
-   ```bash
-   quarto render loglooker_run.qmd
-   ```
-
-## Requirements
-
-Required R packages:
-- (see library calls in the first chunk)
-- webshot
-
-PhantomJS ... install it with webshot::install_phantomjs()
+- PhantomJS ... install it with webshot::install_phantomjs()
 
 
 ## Development
