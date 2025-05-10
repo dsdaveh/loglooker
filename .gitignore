@@ -5,6 +5,7 @@ loglooker_run.qmd
 logs/*.log
 
 # R specific files
+.env
 .Rproj.user
 .Rhistory
 .RData
