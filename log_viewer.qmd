@@ -20,6 +20,7 @@ library(readr)
 library(purrr)
 library(glue)
 library(tibble)
+library(htmltools)
 
 # Function to read last n lines of a file
 read_log_lines <- function(file_path) {
@@ -46,7 +47,7 @@ output_log <- function(file_name) {
   reactable(
     log_data,
     searchable = TRUE,
-    defaultPageSize = 20,
+    defaultPageSize = 10,
     columns = list(
       Line_Number = colDef(
         name = "Line",
@@ -78,14 +79,18 @@ if (!exists("params")) {
 ```
 
 
-## `r params$files[1]`
 
 ```{r}
-#| label: log_viewer_1
+#| label: all_logs
 #| echo: false
 
-# Display the first log file  
-output_log(params$files[1])
+# Display all log files
+tagList(
+  map(params$files, function(file) {
+    tagList(
+      h3(file),
+      output_log(file)
+    )
+  })
+)
 ```
-
-

@@ -1,0 +1,24 @@
+# R specific files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rapp.history
+
+# Quarto files
+*.qmd.html
+*.qmd.pdf
+*.qmd.docx
+*.qmd.odt
+*.qmd.rtf
+
+# Log files
+logs/*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db 
+
+# Quarto
+**_files/*
+**.html
