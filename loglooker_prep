@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Check if logs directory exists
+if [ ! -d "logs" ]; then
+    echo "Error: logs directory not found"
+    exit 1
+fi
+
+# Get list of log files (without .log extension)
+log_files=$(ls logs/*.log 2>/dev/null | sed 's/logs\///' | sed 's/\.log$//' | tr '\n' ' ')
+
+if [ -z "$log_files" ]; then
+    echo "Error: No .log files found in logs directory"
+    exit 1
+fi
+
+# Create temporary file
+temp_file=$(mktemp)
+
+# Read the qmd file and update the params section
+awk -v files="$log_files" '
+BEGIN {
+    in_yaml = 0
+    in_params = 0
+    print "---"
+}
+/^---$/ {
+    in_yaml = 1
+    next
+}
+in_yaml == 1 && /^params:/ {
+    in_params = 1
+    print
+    print "  files:"
+    n = split(files, file_array, " ")
+    for (i = 1; i <= n; i++) {
+        if (file_array[i] != "") {
+            print "    - " file_array[i]
+        }
+    }
+    next
+}
+in_params == 1 && /^[a-z]/ {
+    in_params = 0
+    print
+    next
+}
+in_yaml == 1 && /^---$/ {
+    in_yaml = 0
+    print
+    next
+}
+{
+    print
+}
+' log_viewer.qmd > loglooker_run.qmd
+
+# Remove temp file if it exists
+[ -f "$temp_file" ] && rm "$temp_file"
+
+echo "Wrote updated loglooker_run.qmd with the following log files:"
+echo "$log_files" | tr ' ' '\n' | sed 's/^/  - /' 
