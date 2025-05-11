@@ -1,3 +1,7 @@
+# install/load pacman
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dotenv, rsconnect, repos = getOption("repos"))
+
 # Load environment variables from .env at runtime
 library(dotenv)
 load_dot_env()
