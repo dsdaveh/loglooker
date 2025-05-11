@@ -4,6 +4,10 @@ load_dot_env()
 
 library(rsconnect)
 
+# Get app name from command line argument or use default
+args <- commandArgs(trailingOnly = TRUE)
+app_name <- if (length(args) > 0) args[1] else "LogLooker"
+
 # Set up server and user
 server_url <- trimws(Sys.getenv("POSIT_CONNECT_SERVER"))  # Remove any leading/trailing whitespace
 api_key <- Sys.getenv("POSIT_CONNECT_APIKEY")
@@ -11,6 +15,7 @@ api_key <- Sys.getenv("POSIT_CONNECT_APIKEY")
 # Debug: Print the values (masking the API key)
 cat("Server URL:", server_url, "\n")
 cat("API Key:", paste0(substr(api_key, 1, 4), "..."), "\n")
+cat("App Name:", app_name, "\n")
 
 if (server_url == "" || api_key == "") {
   stop("POSIT_CONNECT_SERVER and POSIT_CONNECT_APIKEY must be set in the environment or .env file.")
@@ -50,5 +55,5 @@ rsconnect::deployApp(
   appFiles = c("loglooker_run.qmd", "logs"),
   appPrimaryDoc = "loglooker_run.qmd",
   server = "myconnect",
-  appName = "LogLooker"
+  appName = app_name
 ) 
