@@ -42,7 +42,8 @@ output_log <- function(file_name) {
   log_file <- glue("logs/{file_name}.log")
   
   # Read and display the log file
-  log_data <- read_log_lines(log_file)
+  log_data <- read_log_lines(log_file) |> 
+    mutate(Content = iconv(Content, "UTF-8", "UTF-8", sub=''))
   
   reactable(
     log_data,
